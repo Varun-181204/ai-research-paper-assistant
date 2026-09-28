@@ -7,6 +7,7 @@ import {
   GitCompare,
   FileText,
   Search,
+  BookOpen,
   Settings as SettingsIcon,
   CheckCircle2
 } from 'lucide-react';
@@ -14,10 +15,11 @@ import {
 const NAV_ITEMS = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard, exact: true },
   { name: 'Paper Library', path: '/papers', icon: Library },
+  { name: 'Semantic Search', path: '/search', icon: Search },
   { name: 'Research Chat', path: '/chat', icon: MessageSquare },
   { name: 'Compare Papers', path: '/compare', icon: GitCompare },
   { name: 'Research Notes', path: '/notes', icon: FileText },
-  { name: 'Literature Review', path: '/review', icon: Search },
+  { name: 'Literature Review', path: '/review', icon: BookOpen },
   { name: 'Settings', path: '/settings', icon: SettingsIcon },
 ];
 
@@ -54,10 +56,10 @@ export default function Sidebar() {
       <div className="p-4 m-3 bg-slate-800/80 rounded-xl border border-slate-700/60 text-xs">
         <div className="flex items-center gap-2 text-emerald-400 font-medium mb-1">
           <CheckCircle2 className="w-4 h-4" />
-          <span>Foundation Active</span>
+          <span>Full Pipeline Active</span>
         </div>
         <p className="text-slate-400 leading-relaxed">
-          Phase 1 Foundation verified. FastAPI + React + PostgreSQL ready for incremental module rollout.
+          FastAPI, ChromaDB, and Google Gemini connected with page-grounded citations.
         </p>
       </div>
     </aside>

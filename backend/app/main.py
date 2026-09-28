@@ -5,7 +5,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import init_db
-from app.routers.health import router as health_router
+from app.routers import (
+    health_router,
+    papers_router,
+    chat_router,
+    analysis_router,
+    search_router,
+    notes_router,
+    dashboard_router,
+)
 
 # Configure structured logging
 logging.basicConfig(
@@ -19,20 +27,20 @@ logger = logging.getLogger("research_assistant")
 async def lifespan(app: FastAPI):
     """Application startup and shutdown events."""
     logger.info("Starting up %s (v%s)...", settings.PROJECT_NAME, settings.VERSION)
-    
+
     # Ensure required runtime directories exist
     os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
     os.makedirs(settings.CHROMA_PERSIST_DIRECTORY, exist_ok=True)
-    
+
     # Initialize database tables
     try:
         init_db()
         logger.info("Database schema verified and initialized.")
     except Exception as e:
         logger.error("Failed to initialize database: %s", str(e))
-    
+
     yield
-    
+
     logger.info("Shutting down %s...", settings.PROJECT_NAME)
 
 
@@ -57,6 +65,14 @@ app.add_middleware(
 # Mount Health Check Endpoints
 app.include_router(health_router, prefix="", tags=["Health"])
 app.include_router(health_router, prefix=settings.API_V1_STR, tags=["Health"])
+
+# Mount Core Application Feature Routers
+app.include_router(papers_router, prefix=settings.API_V1_STR)
+app.include_router(chat_router, prefix=settings.API_V1_STR)
+app.include_router(analysis_router, prefix=settings.API_V1_STR)
+app.include_router(search_router, prefix=settings.API_V1_STR)
+app.include_router(notes_router, prefix=settings.API_V1_STR)
+app.include_router(dashboard_router, prefix=settings.API_V1_STR)
 
 
 @app.get("/", tags=["Root"])
